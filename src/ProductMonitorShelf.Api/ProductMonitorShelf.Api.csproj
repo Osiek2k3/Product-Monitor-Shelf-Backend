@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProductMonitorShelf.Core\ProductMonitorShelf.Core.csproj" />
+    <ProjectReference Include="..\ProductMonitorShelf.Infrastructure\ProductMonitorShelf.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
