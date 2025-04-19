@@ -19,7 +19,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             try
             {
                 var result = await _dbContext.ProductShortages
-                                    .ToListAsync();
+                                .Include(p => p.Shelf)
+                                .ToListAsync();
 
                 return result;
             }
@@ -30,4 +31,3 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         }
     }
 }
-
