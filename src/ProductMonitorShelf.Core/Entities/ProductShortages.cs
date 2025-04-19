@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductMonitorShelf.Core.Entities
 {
-    [Table("ProductShortage")]
-    public class ProductShortage
+    [Table("ProductShortages")]
+    public class ProductShortages
     {
         public int ShortageId { get; set; } //id braku produktu
         public int shopShelfId { get; set; } //id regalu

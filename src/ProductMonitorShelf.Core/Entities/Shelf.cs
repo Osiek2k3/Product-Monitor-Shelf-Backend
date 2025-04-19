@@ -12,6 +12,6 @@ namespace ProductMonitorShelf.Core.Entities
 
         public Department Department { get; set; } = null!;
 
-        public ICollection<ProductShortage> ProductShortages { get; set; } = new List<ProductShortage>();
+        public ICollection<ProductShortages> ProductShortages { get; set; } = new List<ProductShortages>();
     }
 }

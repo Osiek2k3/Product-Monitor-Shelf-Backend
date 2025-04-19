@@ -4,9 +4,9 @@ using ProductMonitorShelf.Core.Entities;
 
 namespace ProductMonitorShelf.Infrastructure.EF.Configurations
 {
-    public sealed class ProductShortageConfiguration : IEntityTypeConfiguration<ProductShortage>
+    public sealed class ProductShortageConfiguration : IEntityTypeConfiguration<ProductShortages>
     {
-        public void Configure(EntityTypeBuilder<ProductShortage> builder)
+        public void Configure(EntityTypeBuilder<ProductShortages> builder)
         {
             //builder.ToTable("Department");
 

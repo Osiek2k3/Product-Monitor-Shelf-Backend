@@ -2,13 +2,17 @@
 using ProductMonitorShelf.Infrastructure.EF;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using ProductMonitorShelf.Infrastructure.Repositories;
+using ProductMonitorShelf.Core.Services;
 
 namespace ProductMonitorShelf.Infrastructure
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IProductShortageRepository, ProductShortageRepository>();
+
             services.Configure<SqlServerOptions>(configuration.GetSection("SqlServer"));
 
             services.AddDbContext<MyDbContext>((serviceProvider, options) =>

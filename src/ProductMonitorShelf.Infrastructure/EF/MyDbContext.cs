@@ -6,13 +6,13 @@ namespace ProductMonitorShelf.Infrastructure.EF
 {
     public sealed class MyDbContext : DbContext
     {
-        public MyDbContext(DbContextOptions<DbContext> options)
+        public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
         }
         public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<Shelf> Shelves { get; set; } = null!;
-        public DbSet<ProductShortage> ProductShortages { get; set; } = null!;
+        public DbSet<ProductShortages> ProductShortages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

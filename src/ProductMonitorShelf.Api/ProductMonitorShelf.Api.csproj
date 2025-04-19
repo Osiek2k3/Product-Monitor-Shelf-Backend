@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProductMonitorShelf.Core\ProductMonitorShelf.Core.csproj" />
     <ProjectReference Include="..\ProductMonitorShelf.Infrastructure\ProductMonitorShelf.Infrastructure.csproj" />
   </ItemGroup>
