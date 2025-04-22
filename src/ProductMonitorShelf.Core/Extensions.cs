@@ -7,8 +7,10 @@ namespace ProductMonitorShelf.Core
     {
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
-
             services.AddTransient<GetAllProductShortageUseCase>();
+            services.AddTransient<GetAllWithPaginationProductShortageUseCase>();
+            services.AddTransient<GetAllCategoriesUseCase>();
+            services.AddTransient<DeleteProductShortageUseCase>();
             return services;
         }
     }

@@ -3,19 +3,18 @@ using ProductMonitorShelf.Core.Services;
 
 namespace ProductMonitorShelf.Core.UseCase
 {
-    public class GetAllProductShortageUseCase
+    public class GetAllWithPaginationProductShortageUseCase
     {
         private readonly IProductShortageRepository _productShortageRepositories;
 
-        public GetAllProductShortageUseCase(IProductShortageRepository productShortageRepositories)
+        public GetAllWithPaginationProductShortageUseCase(IProductShortageRepository productShortageRepositories)
         {
             _productShortageRepositories = productShortageRepositories;
         }
 
-        public async Task<IEnumerable<ProductShortagesDto>> ExecuteAsync()
+        public async Task<IEnumerable<ProductShortagesDto>> ExecuteAsync(int pageNumber, int pageSize)
         {
-            var result = await _productShortageRepositories.GetAllAsync();
-
+            var result = await _productShortageRepositories.GetAllWithPaginationAsync(pageNumber, pageSize);
             return result.Select(ProductShortagesDto.ToMap);
         }
     }

@@ -12,6 +12,7 @@ namespace ProductMonitorShelf.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IProductShortageRepository, ProductShortageRepository>();
+            services.AddScoped<IDepartmentRepository, DepartamentRepository>();
 
             services.Configure<SqlServerOptions>(configuration.GetSection("SqlServer"));
 
