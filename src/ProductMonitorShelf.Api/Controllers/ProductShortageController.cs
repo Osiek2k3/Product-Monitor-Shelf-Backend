@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductMonitorShelf.Core.DTO;
 using ProductMonitorShelf.Core.UseCase;
+using System.Drawing;
 
 namespace ProductMonitorShelf.Api.Controllers
 {
@@ -10,8 +11,10 @@ namespace ProductMonitorShelf.Api.Controllers
     public class ProductShortageController : ControllerBase
     {
         // GET: api/ProductShortages
-        //zwraca wszystkie braki produktów
-        [HttpGet]
+        /// <summary>
+        /// zwraca wszystkie braki produktów       
+        /// </summary>
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetAll(
             [FromServices] GetAllProductShortageUseCase _getAllProductShortageUseCase)
         {
@@ -20,7 +23,21 @@ namespace ProductMonitorShelf.Api.Controllers
         }
 
         // GET: api/ProductShortages
-        //zwraca wszystkie braki produktów z paginacją
+        /// <summary>
+        /// zwraca liczbe wszystkich braków produktów      
+        /// </summary>
+        [HttpGet("Count")]
+        public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetCountAllProductShortage(
+            [FromServices] GetCountAllProductShortageUseCase _getCountAllProductShortageUseCase)
+        {
+            var Count = await _getCountAllProductShortageUseCase.ExecuteAsync();
+            return Ok(Count);
+        }
+
+        // GET: api/ProductShortages
+        /// <summary>
+        /// zwraca wszystkie braki produktów z paginacją       
+        /// </summary>
         [HttpGet("paginated")]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetAllWithPagination(
             [FromServices] GetAllWithPaginationProductShortageUseCase _getAllWithPaginationProductShortageUseCase,
@@ -31,11 +48,24 @@ namespace ProductMonitorShelf.Api.Controllers
         }
 
         // GET: api/ProductShortages/{id}
-        //zwraca brak produktu po ID
+        /// <summary>
+        /// zwraca brak produktu po ID    
+        /// </summary>
+        [HttpGet("byId")]
+        public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetProductShortageById(
+            [FromServices] GetProductShortageByIdUseCase _getProductShortageByIdUseCase,
+            int productShortageId)
+        {
+            var ProductShortage = await _getProductShortageByIdUseCase.ExecuteAsync(productShortageId);
+            //return File(ProductShortage.FileData, "image/jpeg");
+            return Ok(ProductShortage);
+        }
 
 
         // GET: api/ProductShortages/categories
-        //zwraca wszystkie kategorie
+        /// <summary>
+        /// zwraca wszystkie kategorie      
+        /// </summary>
         [HttpGet("categories")]
         public async Task<ActionResult<IEnumerable<object>>> GetAllCategories(
             [FromServices] GetAllCategoriesUseCase _getAllCategoriesUseCase)
@@ -45,7 +75,9 @@ namespace ProductMonitorShelf.Api.Controllers
         }
 
         // DELETE: api/ProductShortages/{id}
-        //Usuwa brak produktu po ID
+        /// <summary>
+        /// Usuwa brak produktu po ID     
+        /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductShortage(
             [FromServices] DeleteProductShortageUseCase _deleteProductShortageUseCase,

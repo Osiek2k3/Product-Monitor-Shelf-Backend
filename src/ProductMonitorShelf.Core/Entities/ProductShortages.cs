@@ -15,7 +15,7 @@ namespace ProductMonitorShelf.Core.Entities
         public double Xmax { get; set; }
         public double Ymin { get; set; }
         public double Ymax { get; set; }
-        public string FilePath { get; set; }  //sciezka do pliku
+        public byte[] FileData { get; set; }  //sciezka do pliku
 
         public Shelf Shelf { get; set; } = null!;
     }

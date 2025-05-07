@@ -1,17 +1,55 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.Extensions.Msal;
 using ProductMonitorShelf.Core.Entities;
 using ProductMonitorShelf.Core.Services;
 using ProductMonitorShelf.Infrastructure.EF;
+using ProductMonitorShelf.Infrastructure.Services;
 
 namespace ProductMonitorShelf.Infrastructure.Repositories
 {
     internal sealed class ProductShortageRepository : IProductShortageRepository
     {
         private readonly MyDbContext _dbContext;
+        private readonly IImageProcessingService _imageProcessingService;
 
-        public ProductShortageRepository(MyDbContext dbContext)
+        public ProductShortageRepository(MyDbContext dbContext,
+            IImageProcessingService imageProcessingService)
         {
             _dbContext = dbContext;
+            _imageProcessingService = imageProcessingService;
+        }
+
+        public async Task<ProductShortages> GetByIdAsync(int productShortageId)
+        {
+            try
+            {
+                var result = await _dbContext.ProductShortages
+                                .Include(ps => ps.Shelf)
+                                .FirstOrDefaultAsync(ps => ps.ShortageId == productShortageId);
+                if (result == null)
+                {
+                    throw new ApplicationException("Nie ma takiego braku o tym ID");
+                }
+
+                var updatedImage = _imageProcessingService.DrawRectangleOnImage(
+                    result.FileData,
+                    (int)result.Xmin,
+                    (int)result.Xmax,
+                    (int)result.Ymin,
+                    (int)result.Ymax
+                );
+
+                result.FileData = updatedImage;
+
+                _dbContext.ProductShortages.Update(result);
+                await _dbContext.SaveChangesAsync();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+            }
         }
 
         public async Task<IEnumerable<ProductShortages>> GetAllAsync()

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using ProductMonitorShelf.Infrastructure.Repositories;
 using ProductMonitorShelf.Core.Services;
+using ProductMonitorShelf.Infrastructure.Services;
 
 namespace ProductMonitorShelf.Infrastructure
 {
@@ -13,6 +14,7 @@ namespace ProductMonitorShelf.Infrastructure
         {
             services.AddScoped<IProductShortageRepository, ProductShortageRepository>();
             services.AddScoped<IDepartmentRepository, DepartamentRepository>();
+            services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
             services.Configure<SqlServerOptions>(configuration.GetSection("SqlServer"));
 

@@ -11,6 +11,9 @@ namespace ProductMonitorShelf.Core
             services.AddTransient<GetAllWithPaginationProductShortageUseCase>();
             services.AddTransient<GetAllCategoriesUseCase>();
             services.AddTransient<DeleteProductShortageUseCase>();
+            services.AddTransient<GetCountAllProductShortageUseCase>();
+            services.AddTransient<GetProductShortageByIdUseCase>();
+            
             return services;
         }
     }

@@ -10,7 +10,7 @@ namespace ProductMonitorShelf.Core.DTO
         public string? ShelfUnit { get; set; }
         public string? ShelfNumber { get; set; }
         public string? ProductNumber { get; set; }
-        public string? FilePath { get; set; }
+        public byte[]? FileData{ get; set; }
         public string? DepartmentId { get; set; }
 
         public static ProductShortagesDto ToMap(ProductShortages x)
@@ -22,7 +22,7 @@ namespace ProductMonitorShelf.Core.DTO
                 ShelfUnit = x.Shelf.ShelfUnit.ToString(),
                 ShelfNumber = x.ShelfNumber.ToString(),
                 ProductNumber = x.ProductNumber.ToString(),
-                FilePath = x.FilePath,
+                FileData = x.FileData,
                 DepartmentId = x.Shelf.DepartmentId.ToString(),
             };
         }

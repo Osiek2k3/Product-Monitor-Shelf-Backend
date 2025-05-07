@@ -1,6 +1,4 @@
-﻿using ProductMonitorShelf.Core.DTO;
-using ProductMonitorShelf.Core.Entities;
-using ProductMonitorShelf.Core.Response;
+﻿using ProductMonitorShelf.Core.Response;
 using ProductMonitorShelf.Core.Services;
 
 namespace ProductMonitorShelf.Core.UseCase
@@ -21,14 +19,14 @@ namespace ProductMonitorShelf.Core.UseCase
         public async Task<IEnumerable<GetAllCategoriesResponse>> ExecuteAsync()
         {
             var departments = await _departmentRepository.GetAllAsync();
+            var results = new List<GetAllCategoriesResponse>();
 
-            var tasks = departments.Select(async department =>
+            foreach (var department in departments)
             {
                 var count = await _productShortageRepository.GetDepartamentCountAsync(department.DepartmentId);
-                return new GetAllCategoriesResponse(department, count);
-            });
+                results.Add(new GetAllCategoriesResponse(department, count));
+            }
 
-            var results = await Task.WhenAll(tasks);
             return results;
         }
     }
