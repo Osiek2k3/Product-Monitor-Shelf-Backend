@@ -2,8 +2,8 @@
 
 namespace ProductMonitorShelf.Core.Services
 {
-    public interface IDepartmentRepository
+    public interface ICategorieRepository
     {
-        Task<IEnumerable<Department>> GetAllAsync();
+        Task<IEnumerable<Categorie>> GetAllAsync();
     }
 }

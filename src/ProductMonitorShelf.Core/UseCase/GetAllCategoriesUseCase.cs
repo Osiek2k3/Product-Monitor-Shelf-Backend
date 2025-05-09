@@ -5,11 +5,11 @@ namespace ProductMonitorShelf.Core.UseCase
 {
     public  class GetAllCategoriesUseCase
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly ICategorieRepository _departmentRepository;
         private readonly IProductShortageRepository _productShortageRepository;
 
         public GetAllCategoriesUseCase(
-            IDepartmentRepository departmentRepository,
+            ICategorieRepository departmentRepository,
             IProductShortageRepository productShortageRepository)
         {
             _departmentRepository = departmentRepository;

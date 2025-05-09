@@ -2,13 +2,13 @@
 
 namespace ProductMonitorShelf.Core.DTO
 {
-    public sealed class DepartmentDto
+    public sealed class CategorieDto
     {
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
-        public static DepartmentDto ToMap(Department x)
+        public static CategorieDto ToMap(Categorie x)
         {
-            return new DepartmentDto
+            return new CategorieDto
             {
                 DepartmentId = x.DepartmentId,
                 DepartmentName = x.DepartmentName

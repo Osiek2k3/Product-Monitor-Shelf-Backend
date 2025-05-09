@@ -4,6 +4,7 @@ using ProductMonitorShelf.Core.Entities;
 using ProductMonitorShelf.Core.Services;
 using ProductMonitorShelf.Infrastructure.EF;
 using ProductMonitorShelf.Infrastructure.Services;
+using System.Drawing.Printing;
 
 namespace ProductMonitorShelf.Infrastructure.Repositories
 {
@@ -86,6 +87,41 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<ProductShortages>> GetAllProductInCategoryAsync(int categoryId)
+        {
+            try
+            {
+                var result = await _dbContext.ProductShortages
+                            .Include(ps => ps.Shelf)
+                            .Where(ps => ps.Shelf.DepartmentId == categoryId)
+                            .ToListAsync();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+            }
+        }
+        public async Task<IEnumerable<ProductShortages>> GetProductsInCategorieWithPaginationAsync(
+            int categoryId, int pageNumber, int pageSize)
+        {
+            try
+            {
+                var result = await _dbContext.ProductShortages
+                                .Include(p => p.Shelf)
+                                .Where(ps => ps.Shelf.DepartmentId == categoryId)
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToListAsync();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+            }
+        }
         public async Task<int> GetDepartamentCountAsync(int departmentId)
         {
             try

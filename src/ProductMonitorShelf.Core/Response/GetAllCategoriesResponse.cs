@@ -5,12 +5,12 @@ namespace ProductMonitorShelf.Core.Response
 {
     public class GetAllCategoriesResponse
     {
-        public DepartmentDto Department { get; set; }
+        public CategorieDto Department { get; set; }
         public int Count { get; set; }
 
-        public GetAllCategoriesResponse(Department department ,int count)
+        public GetAllCategoriesResponse(Categorie department ,int count)
         {
-            Department = DepartmentDto.ToMap(department);
+            Department = CategorieDto.ToMap(department);
             Count = count;
         }
     }

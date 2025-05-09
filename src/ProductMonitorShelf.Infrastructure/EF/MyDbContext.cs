@@ -10,7 +10,7 @@ namespace ProductMonitorShelf.Infrastructure.EF
             : base(options)
         {
         }
-        public DbSet<Department> Departments { get; set; } = null!;
+        public DbSet<Categorie> Departments { get; set; } = null!;
         public DbSet<Shelf> Shelves { get; set; } = null!;
         public DbSet<ProductShortages> ProductShortages { get; set; } = null!;
 

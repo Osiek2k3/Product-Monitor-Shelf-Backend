@@ -13,6 +13,9 @@ namespace ProductMonitorShelf.Core
             services.AddTransient<DeleteProductShortageUseCase>();
             services.AddTransient<GetCountAllProductShortageUseCase>();
             services.AddTransient<GetProductShortageByIdUseCase>();
+            services.AddTransient<GetAllProductsInCategorieUseCase>();
+            services.AddTransient<GetCountProductsInCategorieUseCase>();
+            services.AddTransient<GetProductsInCategorieWithPaginationUseCase>();
             
             return services;
         }

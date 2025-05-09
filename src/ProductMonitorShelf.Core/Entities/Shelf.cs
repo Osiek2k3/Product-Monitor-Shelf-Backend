@@ -10,7 +10,7 @@ namespace ProductMonitorShelf.Core.Entities
         public int DepartmentId { get; set; }
         public int ShelfUnit { get; set; }
 
-        public Department Department { get; set; } = null!;
+        public Categorie Department { get; set; } = null!;
 
         public ICollection<ProductShortages> ProductShortages { get; set; } = new List<ProductShortages>();
     }

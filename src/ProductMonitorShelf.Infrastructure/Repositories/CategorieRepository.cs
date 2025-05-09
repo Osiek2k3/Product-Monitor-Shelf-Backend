@@ -5,14 +5,14 @@ using ProductMonitorShelf.Infrastructure.EF;
 
 namespace ProductMonitorShelf.Infrastructure.Repositories
 {
-    public class DepartamentRepository : IDepartmentRepository
+    public class CategorieRepository : ICategorieRepository
     {
         private readonly MyDbContext _dbContext;
-        public DepartamentRepository(MyDbContext dbContext)
+        public CategorieRepository(MyDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public async Task<IEnumerable<Department>> GetAllAsync()
+        public async Task<IEnumerable<Categorie>> GetAllAsync()
         {
             try
             {
