@@ -17,6 +17,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// zwraca wszystkie braki produktów       
         /// </summary>
         [HttpGet("all")]
+        [ProducesResponseType(typeof(ProductShortagesDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetAll(
             [FromServices] GetAllProductShortageUseCase _getAllProductShortageUseCase)
         {
@@ -29,7 +31,9 @@ namespace ProductMonitorShelf.Api.Controllers
         /// zwraca liczbe wszystkich braków produktów      
         /// </summary>
         [HttpGet("Count")]
-        public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetCountAllProductShortage(
+        [ProducesResponseType(typeof(Count), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Count>> GetCountAllProductShortage(
             [FromServices] GetCountAllProductShortageUseCase _getCountAllProductShortageUseCase)
         {
             var Count = await _getCountAllProductShortageUseCase.ExecuteAsync();
@@ -41,6 +45,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// zwraca wszystkie braki produktów z paginacją       
         /// </summary>
         [HttpGet("Paginated")]
+        [ProducesResponseType(typeof(ProductShortagesDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetAllWithPagination(
             [FromServices] GetAllWithPaginationProductShortageUseCase _getAllWithPaginationProductShortageUseCase,
             [FromQuery] int pageNumber, [FromQuery] int pageSize)
@@ -54,6 +60,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// zwraca brak produktu po ID    
         /// </summary>
         [HttpGet("byId")]
+        [ProducesResponseType(typeof(ProductShortagesDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetProductShortageById(
             [FromServices] GetProductShortageByIdUseCase _getProductShortageByIdUseCase,
             int productShortageId)
@@ -69,6 +77,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// zwraca wszystkie kategorie      
         /// </summary>
         [HttpGet("Categories")]
+        [ProducesResponseType(typeof(GetAllCategoriesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<GetAllCategoriesResponse>>> GetAllCategories(
             [FromServices] GetAllCategoriesUseCase _getAllCategoriesUseCase)
         {
@@ -81,6 +91,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// Zwraca wszystkie kategorie jak i liczbe braków w dane kategorii
         /// </summary>
         [HttpGet("Categories/{categoryId}")]
+        [ProducesResponseType(typeof(ProductShortagesDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetAllProductsInCategorie(
             [FromServices] GetAllProductsInCategorieUseCase _getAllProductsInCategorieUseCase,
             int categoryId)
@@ -94,7 +106,9 @@ namespace ProductMonitorShelf.Api.Controllers
         /// Zwraca liczbe produktów w danej kategorii
         /// </summary>
         [HttpGet("Categories/{categoryId}/Count")]
-        public async Task<ActionResult<int>> GetCountProductsInCategorie(
+        [ProducesResponseType(typeof(Count), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Count>> GetCountProductsInCategorie(
             [FromServices] GetCountProductsInCategorieUseCase _getCountProductsInCategorieUseCase,
             int categoryId)
         {
@@ -107,6 +121,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// Zwraca produkty w danej kategorii z paginacją
         /// </summary>
         [HttpGet("Categories/{categoryId}/Paginated")]
+        [ProducesResponseType(typeof(ProductShortagesDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ProductShortagesDto>>> GetProductsInCategorieWithPagination(
             [FromServices] GetProductsInCategorieWithPaginationUseCase _getProductsInCategorieWithPaginationUseCase,
             [FromQuery] int pageNumber, [FromQuery] int pageSize, int categoryId)
@@ -121,6 +137,8 @@ namespace ProductMonitorShelf.Api.Controllers
         /// Usuwa brak produktu po ID     
         /// </summary>
         [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteProductShortage(
             [FromServices] DeleteProductShortageUseCase _deleteProductShortageUseCase,
             int id)

@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace ProductMonitorShelf.Infrastructure.Exceptions
 {
-    internal sealed class ExceptionMiddleware : IMiddleware
+    public sealed class ExceptionMiddleware : IMiddleware
     {
         private readonly ILogger<ExceptionMiddleware> _logger;
 
@@ -31,15 +31,26 @@ namespace ProductMonitorShelf.Infrastructure.Exceptions
         {
             var (statusCode, error) = exception switch
             {
-                CustomException => (StatusCodes.Status400BadRequest,
-                    new Error(exception.GetType().Name.Underscore().Replace("_exception", string.Empty), exception.Message)),
-                _ => (StatusCodes.Status400BadRequest,
-                new Error("error", "There was an error."))
+                NotFoundException => (
+                    StatusCodes.Status404NotFound,
+                    new Error("not_found", exception.Message)
+                ),
+                DatabaseException => (
+                    StatusCodes.Status500InternalServerError,
+                    new Error("database_error", exception.Message)
+                ),
+                _ => (
+                    StatusCodes.Status500InternalServerError,
+                    new Error("internal_error", "Wystąpił nieoczekiwany błąd.")
+                )
             };
+
+            context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonSerializer.Serialize(error));
         }
 
         private record Error(string Code, string Reason);
+
     }
 }

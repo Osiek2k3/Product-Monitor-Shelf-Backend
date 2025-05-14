@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ProductMonitorShelf.Core;
 using ProductMonitorShelf.Infrastructure;
+using ProductMonitorShelf.Infrastructure.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +16,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -29,9 +26,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services
-    .AddCore()
-    .AddInfrastructure(builder.Configuration);
+builder.Services.AddCore()
+                .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -45,9 +41,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.UseCors("AllowReactApp");
 
 app.MapControllers();

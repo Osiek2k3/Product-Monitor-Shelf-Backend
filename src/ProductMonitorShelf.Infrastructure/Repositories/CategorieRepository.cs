@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductMonitorShelf.Core.Entities;
+using ProductMonitorShelf.Core.Exceptions;
 using ProductMonitorShelf.Core.Services;
 using ProductMonitorShelf.Infrastructure.EF;
 
@@ -24,7 +25,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków kategori.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków kategori.", ex);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client.Extensions.Msal;
 using ProductMonitorShelf.Core.Entities;
+using ProductMonitorShelf.Core.Exceptions;
 using ProductMonitorShelf.Core.Services;
 using ProductMonitorShelf.Infrastructure.EF;
 using ProductMonitorShelf.Infrastructure.Services;
@@ -29,7 +30,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
                                 .FirstOrDefaultAsync(ps => ps.ShortageId == productShortageId);
                 if (result == null)
                 {
-                    throw new ApplicationException("Nie ma takiego braku o tym ID");
+                    throw new NotFoundException("Nie ma takiego braku o tym ID");
                 }
 
                 var updatedImage = _imageProcessingService.DrawRectangleOnImage(
@@ -47,9 +48,13 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
 
                 return result;
             }
+            catch (NotFoundException ex)
+            { 
+                throw new NotFoundException(ex.Message);
+            }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków produktów.", ex);
             }
         }
 
@@ -65,7 +70,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków produktów.", ex);
             }
         }
 
@@ -83,7 +88,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków produktów.", ex);
             }
         }
 
@@ -100,7 +105,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków produktów.", ex);
             }
         }
         public async Task<IEnumerable<ProductShortages>> GetProductsInCategorieWithPaginationAsync(
@@ -119,7 +124,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków produktów.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków produktów.", ex);
             }
         }
         public async Task<int> GetDepartamentCountAsync(int departmentId)
@@ -133,7 +138,7 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Błąd podczas pobierania braków kategori.", ex);
+                throw new DatabaseException("Błąd podczas pobierania braków kategori.", ex);
             }
         }
         public async Task DeleteAsync(int productShortageId)
@@ -145,15 +150,19 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
 
                 if (shortage == null)
                 {
-                    throw new KeyNotFoundException($"Nie znaleziono braku produktu o ID {productShortageId}.");
+                    throw new NotFoundException($"Nie znaleziono braku produktu o ID {productShortageId}.");
                 }
 
                 _dbContext.ProductShortages.Remove(shortage);
                 await _dbContext.SaveChangesAsync();
             }
+            catch (NotFoundException ex)
+            {
+                throw new NotFoundException(ex.Message);
+            }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Błąd podczas usuwania braku produktu o ID {productShortageId}.", ex);
+                throw new DatabaseException($"Błąd podczas usuwania braku produktu o ID {productShortageId}.", ex);
             }
         }
     }

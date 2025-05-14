@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductMonitorShelf.Infrastructure.Repositories;
 using ProductMonitorShelf.Core.Services;
 using ProductMonitorShelf.Infrastructure.Services;
+using ProductMonitorShelf.Infrastructure.Exceptions;
 
 namespace ProductMonitorShelf.Infrastructure
 {
@@ -15,6 +16,7 @@ namespace ProductMonitorShelf.Infrastructure
             services.AddScoped<IProductShortageRepository, ProductShortageRepository>();
             services.AddScoped<ICategorieRepository, CategorieRepository>();
             services.AddScoped<IImageProcessingService, ImageProcessingService>();
+            services.AddSingleton<ExceptionMiddleware>();
 
             services.Configure<SqlServerOptions>(configuration.GetSection("SqlServer"));
 
