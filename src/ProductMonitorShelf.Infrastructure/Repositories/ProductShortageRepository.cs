@@ -25,6 +25,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                                 .Include(ps => ps.Shelf)
                                 .FirstOrDefaultAsync(ps => ps.ShortageId == productShortageId);
@@ -62,6 +64,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                                 .Include(p => p.Shelf)
                                 .ToListAsync();
@@ -78,6 +82,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                                 .Include(p => p.Shelf)
                                 .Skip((pageNumber - 1) * pageSize)
@@ -96,6 +102,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                             .Include(ps => ps.Shelf)
                             .Where(ps => ps.Shelf.DepartmentId == categoryId)
@@ -113,6 +121,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                                 .Include(p => p.Shelf)
                                 .Where(ps => ps.Shelf.DepartmentId == categoryId)
@@ -131,6 +141,8 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
         {
             try
             {
+                await CleanShortagesNoiseAsync();
+
                 var result = await _dbContext.ProductShortages
                                 .CountAsync(ps => ps.Shelf.DepartmentId == departmentId);
 
@@ -165,5 +177,48 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
                 throw new DatabaseException($"Błąd podczas usuwania braku produktu o ID {productShortageId}.", ex);
             }
         }
+
+        private const double TOLERANCE = 0.5;
+
+        private async Task CleanShortagesNoiseAsync()
+        {
+            var all = await _dbContext.ProductShortages
+                .Include(p => p.Shelf)
+                .ToListAsync();
+
+            var grouped = all
+                .GroupBy(s => new
+                {
+                    Xcenter = Math.Round(((s.Xmin + s.Xmax) / 2) / TOLERANCE),
+                    Ycenter = Math.Round(((s.Ymin + s.Ymax) / 2) / TOLERANCE),
+                    s.shopShelfId,
+                    s.ShelfNumber,
+                    s.ProductName
+                });
+
+            var toRemove = new List<ProductShortages>();
+            var toKeep = new List<ProductShortages>();
+
+            foreach (var group in grouped)
+            {
+                var items = group.ToList();
+                if (items.Count % 2 == 0)
+                {
+                    toRemove.AddRange(items);
+                }
+                else
+                {
+                    toKeep.Add(items.First());
+                    toRemove.AddRange(items.Skip(1));
+                }
+            }
+
+            if (toRemove.Any())
+            {
+                _dbContext.ProductShortages.RemoveRange(toRemove);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

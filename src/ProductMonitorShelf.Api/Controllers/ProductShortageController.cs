@@ -67,8 +67,8 @@ namespace ProductMonitorShelf.Api.Controllers
             int productShortageId)
         {
             var ProductShortage = await _getProductShortageByIdUseCase.ExecuteAsync(productShortageId);
-            //return File(ProductShortage.FileData, "image/jpeg");
-            return Ok(ProductShortage);
+            return File(ProductShortage.FileData, "image/jpeg");
+            //return Ok(ProductShortage);
         }
 
 
