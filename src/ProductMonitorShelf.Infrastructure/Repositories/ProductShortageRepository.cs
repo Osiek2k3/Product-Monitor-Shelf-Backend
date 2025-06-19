@@ -165,7 +165,25 @@ namespace ProductMonitorShelf.Infrastructure.Repositories
                     throw new NotFoundException($"Nie znaleziono braku produktu o ID {productShortageId}.");
                 }
 
+                var archive = new ProductShortagesArchive
+                {
+                    ShortageId = shortage.ShortageId,
+                    shopShelfId = shortage.shopShelfId,
+                    ProductName = shortage.ProductName,
+                    ProductNumber = shortage.ProductNumber,
+                    ShelfNumber = shortage.ShelfNumber,
+                    Xmin = shortage.Xmin,
+                    Xmax = shortage.Xmax,
+                    Ymin = shortage.Ymin,
+                    Ymax = shortage.Ymax,
+                    FileData = shortage.FileData,
+                    ArchivedDate = DateTime.UtcNow
+                };
+
+                _dbContext.ProductShortagesArchive.Add(archive);
+
                 _dbContext.ProductShortages.Remove(shortage);
+
                 await _dbContext.SaveChangesAsync();
             }
             catch (NotFoundException ex)
